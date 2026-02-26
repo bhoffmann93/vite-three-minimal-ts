@@ -18,6 +18,7 @@ const params = {
 const material = new THREE.ShaderMaterial({
   uniforms: {
     uTime: { value: 0 },
+    uDelta: { value: 0 },
     uResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
     uSpeed: { value: params.uSpeed },
   },
@@ -49,7 +50,10 @@ window.addEventListener('keydown', (e) => {
 function animate() {
   requestAnimationFrame(animate);
 
-  material.uniforms.uTime.value = clock.getElapsedTime();
+  const delta = clock.getDelta();
+
+  material.uniforms.uTime.value += delta;
+  material.uniforms.uDelta.value = delta;
 
   renderer.render(scene, camera);
 }

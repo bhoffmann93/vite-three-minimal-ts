@@ -1,4 +1,5 @@
 uniform float uTime;
+uniform float uDelta;
 uniform float uSpeed;
 uniform vec2 uResolution;
 
