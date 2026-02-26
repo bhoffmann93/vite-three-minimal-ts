@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { Pane } from 'tweakpane';
+import Stats from 'stats.js';
 import vertexShader from '../glsl/default.vert';
 import fragmentShader from '../glsl/default.frag';
 
@@ -33,6 +34,10 @@ const material = new THREE.ShaderMaterial({
 const mesh = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), material);
 scene.add(mesh);
 
+const stats = new Stats();
+stats.showPanel(0);
+document.body.appendChild(stats.dom);
+
 const pane = new Pane({ title: 'Controls' });
 pane.addBinding(params, 'uSpeed', { min: 0, max: 5, step: 0.01, label: 'speed' }).on('change', ({ value }) => {
   material.uniforms.uSpeed.value = value;
@@ -48,12 +53,17 @@ window.addEventListener('resize', () => {
 });
 
 window.addEventListener('keydown', (e) => {
-  if (e.key === 'g' || e.key === 'p') pane.hidden = !pane.hidden;
+  if (e.key === 'g' || e.key === 'p') {
+    pane.hidden = !pane.hidden;
+    stats.dom.style.display = stats.dom.style.display === 'none' ? 'block' : 'none';
+  }
   if (e.key === 'h') controls.reset();
 });
 
 function animate() {
   requestAnimationFrame(animate);
+
+  stats.begin();
 
   const delta = clock.getDelta();
 
@@ -65,6 +75,8 @@ function animate() {
 
   controls.update();
   renderer.render(scene, camera);
+
+  stats.end();
 }
 
 animate();
