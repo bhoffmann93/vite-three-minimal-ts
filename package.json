@@ -12,6 +12,7 @@
   "devDependencies": {
     "@eslint/js": "^9.39.1",
     "@tweakpane/core": "^2.0.5",
+    "@types/stats.js": "^0.17.4",
     "@types/three": "^0.181.0",
     "@typescript-eslint/eslint-plugin": "^8.46.4",
     "@typescript-eslint/parser": "^8.46.4",
@@ -24,6 +25,7 @@
     "vite-plugin-glsl": "^1.5.4"
   },
   "dependencies": {
+    "stats.js": "^0.17.0",
     "three": "^0.181.1",
     "tweakpane": "^4.0.5"
   }

@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { Pane } from 'tweakpane';
+import Stats from 'stats.js';
 import vertexShader from '../glsl/default.vert';
 import fragmentShader from '../glsl/default.frag';
 
@@ -31,6 +32,10 @@ const material = new THREE.ShaderMaterial({
 const quad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), material);
 scene.add(quad);
 
+const stats = new Stats();
+stats.showPanel(0);
+document.body.appendChild(stats.dom);
+
 const pane = new Pane({ title: 'Controls' });
 pane.addBinding(params, 'uSpeed', { min: 0, max: 5, step: 0.01, label: 'speed' }).on('change', ({ value }) => {
   material.uniforms.uSpeed.value = value;
@@ -44,11 +49,16 @@ window.addEventListener('resize', () => {
 });
 
 window.addEventListener('keydown', (e) => {
-  if (e.key === 'g' || e.key === 'p') pane.hidden = !pane.hidden;
+  if (e.key === 'g' || e.key === 'p') {
+    pane.hidden = !pane.hidden;
+    stats.dom.style.display = stats.dom.style.display === 'none' ? 'block' : 'none';
+  }
 });
 
 function animate() {
   requestAnimationFrame(animate);
+
+  stats.begin();
 
   const delta = clock.getDelta();
 
@@ -56,6 +66,8 @@ function animate() {
   material.uniforms.uDelta.value = delta;
 
   renderer.render(scene, camera);
+
+  stats.end();
 }
 
 animate();
